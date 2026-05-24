@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EMSI MicroLearn</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2324b256'%3E%3Cpath d='M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z'/%3E%3Cpath d='M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z'/%3E%3C/svg%3E">    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap");
+
+      :root {
+        --emsi-vert: #1a8a42;
+        --emsi-vert-clair: #24b256;
+        --emsi-gris: #4a4a4a;
+        --emsi-accent: #d83b26;
+        --fond-clair: #f8faff;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--fond-clair);
+        color: var(--emsi-gris);
+        line-height: 1.6;
+      }
+
+      .navbar {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+      }
+
+      .navbar-brand {
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--emsi-vert) !important;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--emsi-vert), var(--emsi-vert-clair));
+        border: none;
+        border-radius: 50px;
+        padding: 10px 24px;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(26, 138, 66, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26, 138, 66, 0.3);
+        background: linear-gradient(135deg, #146c33, var(--emsi-vert));
+      }
+
+      .card {
+        border: none;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(149, 157, 165, 0.08);
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(149, 157, 165, 0.15);
+      }
+
+      .badge {
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+      }
+
+      .text-primary {
+        color: var(--emsi-vert) !important;
+      }
+      .text-accent {
+        color: var(--emsi-accent) !important;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light py-3 shadow-sm mb-5">
+      <div class="container">
+        <a class="navbar-brand fs-4" href="{% url 'dashboard_etudiant' %}">
+          <i class="bi bi-mortarboard-fill me-2 text-primary"></i>EMSI MicroLearn
+        </a>
+
+        <div class="d-flex align-items-center">
+          {% if user.is_authenticated %}
+          <span class="me-4 fw-medium text-secondary">
+            <i class="bi bi-person-circle fs-5 align-middle me-1"></i>
+            {{ user.first_name|default:user.username }} {{ user.last_name }}
+          </span>
+          <div class="d-flex align-items-center gap-2">
+            <a href="{% url 'profil' %}" class="btn btn-outline-primary btn-sm rounded-pill px-3 py-2 fw-medium">
+              <i class="bi bi-person-fill me-1"></i> Mon profil
+            </a>
+            <form action="{% url 'logout' %}" method="post" class="m-0">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3 py-2 fw-medium">
+                <i class="bi bi-box-arrow-right me-1"></i> Déconnexion
+              </button>
+            </form>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <div class="container pb-5">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'success' %}success{% else %}info{% endif %} alert-dismissible fade show border-0 shadow-sm" role="alert">
+            <span class="fw-medium">{{ message }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}
+      {% endblock %}
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

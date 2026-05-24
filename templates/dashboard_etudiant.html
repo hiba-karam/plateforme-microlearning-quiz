@@ -1,0 +1,72 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="row align-items-center mb-5">
+  <div class="col-md-7">
+    <h2 class="text-dark fw-bold mb-1">Mon Tableau de Bord</h2>
+    <p class="text-muted fs-5">
+      Sélectionnez un module pour tester vos connaissances.
+    </p>
+  </div>
+  <div class="col-md-5 text-end">
+    <div class="d-flex justify-content-end align-items-center gap-2">
+      <div class="bg-white px-4 py-2 rounded-pill shadow-sm border">
+        <span class="text-secondary fw-medium me-2">Score global :</span>
+        <span class="fw-bold fs-5 text-dark">
+          <i class="bi bi-trophy-fill text-warning me-1"></i><span>{{ user.score_global }}</span> pts
+        </span>
+      </div>
+      <a href="{% url 'classement' %}" class="btn btn-warning rounded-pill shadow-sm fw-bold px-4">
+        <i class="bi bi-bar-chart-fill me-1"></i> Classement
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  {% for quiz in quizzes %}
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm border-0">
+      <div class="card-body p-4 d-flex flex-column">
+        <h4 class="card-title fw-bold text-dark mb-3">{{ quiz.titre }}</h4>
+        <p class="card-text text-muted mb-4 flex-grow-1">
+          Évaluation technique
+        </p>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 small bg-light p-3 rounded-3">
+          <span class="fw-medium text-dark">
+            <i class="bi bi-stopwatch text-accent fs-5 align-middle me-1"></i>
+            {{ quiz.temps_imparti }} min
+          </span>
+          <span class="fw-medium text-dark">
+            <i class="bi bi-bullseye text-success fs-5 align-middle me-1"></i>
+            {% if quiz.est_expert %}
+              Validé
+            {% else %}
+              {{ quiz.essais_restants }} essai(s)
+            {% endif %}
+          </span>
+        </div>
+
+        {% if quiz.est_expert %}
+          <button class="btn btn-warning w-100 py-2 fw-bold text-dark" disabled>
+            <i class="bi bi-trophy-fill me-2"></i> Quiz Maîtrisé !
+          </button>
+        {% elif quiz.essais_restants > 0 %}
+          <a href="{% url 'passer_quiz' quiz.id %}" class="btn btn-success w-100 py-2 fw-bold">
+            <i class="bi bi-play-circle me-2"></i> Démarrer l'évaluation
+          </a>
+        {% else %}
+          <button class="btn btn-secondary w-100 py-2 fw-bold" disabled>
+            <i class="bi bi-x-circle me-2"></i> Tentatives épuisées
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12 text-center py-5">
+    <p class="text-muted fs-5">Aucun quiz n'est disponible pour le moment.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

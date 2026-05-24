@@ -1,0 +1,128 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="row mt-4">
+  <div class="col-md-4 mb-4">
+    <div class="card shadow-sm border-0 rounded-4 text-center p-4 mb-4">
+      <div class="mb-3">
+        <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle shadow-sm" style="width: 80px; height: 80px; font-size: 2rem">
+          {{ user.first_name|first|default:user.username|first|upper }}
+        </div>
+      </div>
+      <h4 class="fw-bold mb-0 text-primary">
+        {{ user.first_name }} {{ user.last_name }}
+      </h4>
+      <p class="text-muted mb-2">@{{ user.username }}</p>
+      <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
+        <i class="bi bi-mortarboard-fill me-1"></i> Étudiant EMSI
+      </span>
+
+      <hr class="my-4 text-muted" />
+
+      <div class="text-start">
+        <p class="mb-2">
+          <i class="bi bi-envelope-fill text-muted me-2"></i> {{ user.email|default:"Email non renseigné" }}
+        </p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h5 class="fw-bold mb-3">
+        <i class="bi bi-shield-lock-fill text-primary me-2"></i> Sécurité
+      </h5>
+      <p class="text-muted small">
+        Mettez à jour votre mot de passe pour protéger votre compte.
+      </p>
+      <a href="{% url 'changer_mdp' %}" class="btn btn-outline-primary w-100 rounded-pill">
+        Modifier mon mot de passe
+      </a>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="row mb-4">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card shadow-sm border-0 rounded-4 p-4 h-100 border-start border-4 border-primary">
+          <h6 class="text-muted fw-bold mb-2">QUIZ TERMINÉS</h6>
+          <h2 class="fw-bold text-dark mb-0">
+            <i class="bi bi-check-circle-fill text-success me-2"></i> {{ total_quiz }}
+          </h2>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card shadow-sm border-0 rounded-4 p-4 h-100 border-start border-4 border-warning">
+          <h6 class="text-muted fw-bold mb-2">SCORE MOYEN</h6>
+          <h2 class="fw-bold text-dark mb-0">
+            <i class="bi bi-star-fill text-warning me-2"></i> {{ score_moyen }}%
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+      <h5 class="fw-bold mb-4">
+        <i class="bi bi-award-fill text-primary me-2"></i> Mes Badges
+      </h5>
+
+      {% if badges %}
+      <div class="row g-4">
+        {% for badge in badges %}
+        <div class="col-md-4">
+          <div class="text-center p-4 h-100 position-relative transition-badge">
+            <div class="badge-shape mx-auto d-flex align-items-center justify-content-center mb-3 shadow-lg">
+              <i class="bi {{ badge.icone }} {{ badge.couleur }}" style="font-size: 3rem"></i>
+            </div>
+            <h5 class="fw-bold text-dark mb-1">{{ badge.nom }}</h5>
+            <p class="text-muted small lh-sm">{{ badge.desc }}</p>
+            <div class="mx-auto mt-2 deco-line"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="text-center py-5 bg-light rounded-3">
+        <i class="bi bi-trophy text-muted" style="font-size: 3rem; opacity: 0.5"></i>
+        <p class="text-muted mt-3 mb-0">Vous n'avez pas encore de badges.</p>
+        <p class="text-muted small">Complétez des quiz pour en débloquer !</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .badge-shape {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    border: 3px solid var(--emsi-vert);
+    transition: all 0.4s ease;
+  }
+
+  .deco-line {
+    height: 4px;
+    width: 40px;
+    background: var(--emsi-vert);
+    border-radius: 10px;
+    opacity: 0.6;
+  }
+
+  .transition-badge {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: default;
+  }
+
+  .transition-badge:hover {
+    transform: scale(1.1);
+  }
+
+  .transition-badge:hover .badge-shape {
+    border-radius: 50%;
+    background: var(--emsi-vert);
+  }
+
+  .transition-badge:hover i {
+    color: white !important;
+  }
+</style>
+{% endblock %}
