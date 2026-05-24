@@ -1,7 +1,7 @@
 # Plateforme de Micro-learning pour Quiz Techniques
 
 ## À propos
-Ce projet est une solution de micro-learning développée pour optimiser l'auto-évaluation des étudiants en ingénierie. La plateforme propose un parcours pédagogique personnalisé basé sur une logique adaptative, tout en garantissant l'intégrité des évaluations grâce à une sécurisation rigoureuse des sessions côté serveur.
+Ce projet est une solution de micro-learning développée pour optimiser l'auto-évaluation des étudiants en ingénierie. La plateforme propose un parcours pédagogique personnalisé basé sur une logique adaptative et intègre une dimension de gamification (système de badges et classement) pour stimuler l'engagement. L'ensemble est soutenu par une architecture garantissant l'intégrité des évaluations grâce à une sécurisation rigoureuse des sessions côté serveur.
 
 ## Fonctionnalités
 * **Algorithme Adaptatif :** Ajustement dynamique de la difficulté des questions en temps réel via un moteur basé sur un arbre de décision conditionnel.
